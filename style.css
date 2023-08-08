@@ -55,6 +55,7 @@ body {
 
 #clear-delete {
      display:flex;
+     gap:1px;
 }
 
 #clear-delete > button {

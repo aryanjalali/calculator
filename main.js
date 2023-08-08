@@ -15,6 +15,9 @@ Make result the new current number and display it
 let buttonList = document.querySelectorAll('button');
 let display = document.querySelector('#display');
 let currentNumber = 0;
+let currentOperation = '';
+let readyToCalculate = false;
+let nextNumberDisplayZero = false;
 
 buttonList.forEach(button => button.addEventListener('click', getUserInput));
 
@@ -24,7 +27,7 @@ function getUserInput(e) {
      //e.target.innerText refers to the symbol/text/number on the button
      switch(e.target.innerText){
           case 'CLEAR':
-               console.log('clear');
+               clearCalculator()
                break;
           case 'DELETE':
                deleteNumber();
@@ -33,13 +36,13 @@ function getUserInput(e) {
           case '-':
           case '*':
           case '÷':
-               console.log('symbol');
+               performMath(e.target.innerText);
                break;
           case '.':
-               console.log('decimal');
+               addDecimal();
                break;
           case '=':
-               console.log('equals');
+               calculate();
                break;
           default: // Only numbers unaccounted for in previous cases
                getNumber(e.target.innerText);   
@@ -48,8 +51,12 @@ function getUserInput(e) {
      
 }
 
-function clearCalculator(e) {
-
+function clearCalculator() {
+     currentNumber = 0;
+     currentOperation = '';
+     readyToCalculate = false; 
+     nextNumberDisplayZero = false;
+     display.innerText = 0;
 }
 
 function deleteNumber() {
@@ -64,5 +71,65 @@ function getNumber(number){
      if (display.innerText == 0){
           display.innerText = '';
      }
+
+     if (nextNumberDisplayZero === true){
+          display.innerText = '';
+          nextNumberDisplayZero = false;
+     }
      display.innerText += number;
+}
+
+function addDecimal(){
+     if (display.innerText.includes('.')){
+          return;
+     }
+     display.innerText += '.';
+}
+
+function performMath(mathSign){
+     if (readyToCalculate === false) {
+          currentNumber = display.innerText;
+          display.innerText = 0;
+          readyToCalculate = true;
+          currentOperation = mathSign;
+     } else {
+          let output = decideMathOperation(currentOperation);
+
+          display.innerText = output;
+          currentNumber = output;
+          
+          currentOperation = mathSign;
+          nextNumberDisplayZero = true;
+     }    
+}
+
+function calculate() {
+     if (readyToCalculate === false){
+          return;
+     } 
+     let output = decideMathOperation(currentOperation);
+     display.innerText = output;
+     currentNumber = output;
+     readyToCalculate = false;
+     nextNumberDisplayZero = true;
+}
+
+function decideMathOperation(operation){
+     let output = 0;
+     if (operation == '+'){
+          output = Number(currentNumber) + Number(display.innerText);
+     } else if (operation == '-') {
+          output = Number(currentNumber) - Number(display.innerText);
+     } else if (operation == '*') {
+          output = Number(currentNumber) * Number(display.innerText);
+     } else if (operation == '÷') {
+          if (display.innerText == 0){
+               currentNumber = 0;
+               readyToCalculate = false;
+               nextNumberDisplayZero = true;
+               return display.innerText = 'nice try';
+          }
+          output = Number(currentNumber) / Number(display.innerText);
+     }
+     return output;
 }
