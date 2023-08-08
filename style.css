@@ -67,6 +67,7 @@ body {
 
 #grid-buttons {
      display:flex;
+     gap:1px;
 }
 
 #main-buttons {
@@ -85,7 +86,6 @@ body {
      flex: 1 1 10%;
      display:flex;
      flex-direction:column;
-     margin-left:1px;
 }
 
 /* Footer Styles */
