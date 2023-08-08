@@ -93,7 +93,7 @@ function performMath(mathSign){
           readyToCalculate = true;
           currentOperation = mathSign;
      } else {
-          let output = decideMathOperation(currentOperation);
+          let output = operate(currentOperation);
 
           display.innerText = output;
           currentNumber = output;
@@ -107,14 +107,14 @@ function calculate() {
      if (readyToCalculate === false){
           return;
      } 
-     let output = decideMathOperation(currentOperation);
+     let output = operate(currentOperation);
      display.innerText = output;
      currentNumber = output;
      readyToCalculate = false;
      nextNumberDisplayZero = true;
 }
 
-function decideMathOperation(operation){
+function operate(operation){
      let output = 0;
      if (operation == '+'){
           output = Number(currentNumber) + Number(display.innerText);
