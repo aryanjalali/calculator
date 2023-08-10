@@ -34,9 +34,42 @@ function getUserInput(e) {
           default: // Only numbers unaccounted for in previous cases
                getNumber(e.target.innerText);   
      }
-     
-     
 }
+
+//Provide keyboard support
+document.addEventListener('keydown', (e) => {
+     switch(e.key){
+          case 'Backspace':
+               deleteNumber();
+               break;
+          case '+':
+          case '-':
+          case '*':
+          case '/':
+               performMath(e.key);
+               break;
+          case '.':
+               addDecimal();
+               break;
+          case 'Enter':
+               calculate();
+               break;
+          case '0':
+          case '1':
+          case '2':
+          case '3':     
+          case '4':
+          case '5':
+          case '6':
+          case '7':
+          case '8':             
+          case '9':
+               getNumber(e.key);
+               break;
+          default:
+               return; 
+     }
+});
 
 function clearCalculator() {
      currentNumber = 0;
@@ -119,7 +152,7 @@ function operate(operation){
           output = Number(currentNumber) - Number(display.innerText);
      } else if (operation == '*') {
           output = Number(currentNumber) * Number(display.innerText);
-     } else if (operation == '÷') {
+     } else if (operation == '÷' || operation =='/') {
           if (display.innerText == 0){
                currentNumber = 0;
                readyToCalculate = false;
@@ -128,5 +161,13 @@ function operate(operation){
           }
           output = Number(currentNumber) / Number(display.innerText);
      }
+     
+     //Round to 3 decimal places
+     if(output.toString().indexOf('.') >= 0){
+          if (output.toString().substring(output.toString().indexOf('.')).length > 4){
+               output = Math.round(output * 1000) / 1000;
+          };
+     }
+     
      return output;
 }
