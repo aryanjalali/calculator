@@ -89,7 +89,7 @@ function deleteNumber() {
 }
 
 function getNumber(number){
-     if (display.innerText == 0){
+     if (display.innerText === '0'){
           display.innerText = '';
      }
 
