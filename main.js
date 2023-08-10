@@ -1,23 +1,10 @@
-/*
-Pseudocode ?
-
-Take user number input(s)
-Take user sign input
-Store numbers up to now as current number
-Store sign as current math function
-Take user number input(s)
-User clicks enter signals to apply math function to two numbers
-OR user clicks another math function signals to perform calculation
-Make result the new current number and display it
-
-*/
-
 let buttonList = document.querySelectorAll('button');
 let display = document.querySelector('#display');
 let currentNumber = 0;
 let currentOperation = '';
 let readyToCalculate = false;
 let nextNumberDisplayZero = false;
+let operationHolding = false;
 
 buttonList.forEach(button => button.addEventListener('click', getUserInput));
 
@@ -57,6 +44,7 @@ function clearCalculator() {
      readyToCalculate = false; 
      nextNumberDisplayZero = false;
      display.innerText = 0;
+     operationHolding = false;
 }
 
 function deleteNumber() {
@@ -77,6 +65,7 @@ function getNumber(number){
           nextNumberDisplayZero = false;
      }
      display.innerText += number;
+     operationHolding = false;
 }
 
 function addDecimal(){
@@ -87,11 +76,17 @@ function addDecimal(){
 }
 
 function performMath(mathSign){
+     if (operationHolding === true){
+          currentOperation = mathSign;
+          return;
+     }
+
      if (readyToCalculate === false) {
           currentNumber = display.innerText;
           display.innerText = 0;
           readyToCalculate = true;
           currentOperation = mathSign;
+          operationHolding = true;
      } else {
           let output = operate(currentOperation);
 
@@ -100,6 +95,7 @@ function performMath(mathSign){
           
           currentOperation = mathSign;
           nextNumberDisplayZero = true;
+          operationHolding = true;
      }    
 }
 
@@ -112,6 +108,7 @@ function calculate() {
      currentNumber = output;
      readyToCalculate = false;
      nextNumberDisplayZero = true;
+     operationHolding = false;
 }
 
 function operate(operation){
