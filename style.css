@@ -23,6 +23,16 @@ body {
      font-size:inherit;
 }
 
+.button:hover {
+     transform:scale(1.05);
+     background-color:white;
+}
+
+.button:active, #signs > .button:active {
+     transform:translateX(0.2rem);
+     background-color:rgb(204, 130, 130);
+}
+
 /* Header Styles */
 #main-header {
      background-color:black;
